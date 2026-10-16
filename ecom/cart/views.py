@@ -10,7 +10,8 @@ def cart_summary(request):
     # Obtener los productos del carrito 
     cart_products = cart.get_prods() 
     quantities = cart.get_quants() 
-    return render(request, "cart_summary.html", {'cart_products': cart_products, 'quantities': quantities}) 
+    totals = cart.cart_total()
+    return render(request, "cart_summary.html", {'cart_products': cart_products, 'quantities': quantities, 'totals': totals}) 
 
 def cart_add(request): 
     # Get the cart 
@@ -38,8 +39,8 @@ def cart_delete(request):
         product_id = int(request.POST.get('product_id')) 
         # Llamar a la función delete en cart.py 
         cart.delete(product=product_id) 
-        # Responder con el ID del producto eliminado 
         response = JsonResponse({'product': product_id}) 
+        messages.success(request, ("Item Deleted From Shopping Cart"))
         return response 
 
 def cart_update(request): 
@@ -50,6 +51,7 @@ def cart_update(request):
         product_qty = int(request.POST.get('product_qty')) 
         
         cart.update(product=product_id, quantity=product_qty) 
-        
+        messages.success(request, "Your Cart Has Been Updated")
         response = JsonResponse({'qty': product_qty}) 
         return response 
+

@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+
+{% block content %} 
+
+<!-- Header--> 
+<header class="bg-dark py-5"> 
+    <div class="container px-4 px-lg-5 my-5"> 
+        <div class="text-center text-white"> 
+            <h1 class="display-4 fw-bolder">Categories</h1> 
+            <p class="lead fw-normal text-white-50 mb-0">Choose your category below</p> 
+        </div> 
+    </div> 
+</header> 
+
+<div class="container">
+    <div class="row"> 
+        <center> 
+            <br/><br/> 
+            <br/>
+            <div class="col-8">
+                {% for category in categories %}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="{{ category.image.url }}" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder"><a href="{% url 'category' category %}"> {{ category.name }} </a></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <br/>  
+            </div> 
+        </center> 
+    </div>          
+</div> 
+
+{% endblock %}
+
