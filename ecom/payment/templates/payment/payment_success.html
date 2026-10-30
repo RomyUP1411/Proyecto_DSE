@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Payment Success</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Your payment was successful</p>
+        </div>
+    </div>
+</header>
+<br/><br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    Payment Status
+                </div>
+                <div class="card-body text-center">
+                    <h1>Payment Success</h1>
+                    <p>Thank you for your purchase!</p>
+                    <br/>
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/><br/>
+{% endblock %}
+

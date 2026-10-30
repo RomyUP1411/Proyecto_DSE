@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.models import User 
 from django.contrib.auth.forms import UserCreationForm 
 from django import forms
@@ -7,6 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from .models import Product, Category, Profile
 from django.db.models import Q
+from cart.cart import Cart
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 
 def home(request): 
     products = Product.objects.all() 
@@ -23,6 +27,17 @@ def login_user(request):
         user = authenticate(request, username=username, password=password) 
         if user is not None: 
             login(request, user) 
+
+            current_user = Profile.objects.get(user__id=request.user.id)
+            saved_cart = current_user.old_cart
+
+            if saved_cart:
+                converted_cart = json.loads(saved_cart)
+                cart = Cart(request)
+
+                for key, value in converted_cart.items():
+                    cart.db_add(product=key, quantity=value)
+
             messages.success(request, ("You Have Been Logged In")) 
             return redirect('home') 
         else: 
@@ -69,14 +84,12 @@ def category(request, foo):
     ctgs = Category.objects.all() 
     # categoria de url 
     try: 
-        #Buscar la categoria 
         category = Category.objects.get(name=foo) 
-        #Buscar los productos en esta categoría 
         products = Product.objects.filter(category=category) 
         return render(request, 'category.html', {'products':products, 'category':category, 'ctgs':ctgs}) 
     except: 
-        messages.success(request, ("That category doesn't exist")) 
-        return redirect('home')
+        messages.success(request, ("Esta categoría no existe")) 
+        return redirect('home') 
 
 def category_summary(request):
     categories = Category.objects.all()
@@ -121,17 +134,23 @@ def update_password(request):
 
 def update_info(request):
     if request.user.is_authenticated:
-        current_user, created = Profile.objects.get_or_create(user=request.user)
+        # Obtener el perfil del usuario actual
+        current_user = Profile.objects.get(user__id=request.user.id)
+        # Obtener la dirección de envío del usuario actual
+        shipping_user, created = ShippingAddress.objects.get_or_create(user=request.user)
+        # Obtener los formularios con los datos actuales del usuario
         form = UserInfoForm(request.POST or None, instance=current_user)
-        
-        if form.is_valid():
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+
+        if form.is_valid() and shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             messages.success(request, "Your Info Has Been Updated.")
             return redirect('home')
 
-        return render(request, 'update_info.html', {'form': form})
+        return render(request, 'update_info.html', {'form': form, 'shipping_form': shipping_form})
     else:
-        messages.success(request, ("You Must Be Logged In To Access This Page."))
+        messages.error(request, "You Must Be Logged In To Access This Page.")
         return redirect('home')
 
 def search(request):
@@ -148,4 +167,3 @@ def search(request):
             return render(request, 'search.html', {'searched': searched})
     else:
         return render(request, 'search.html', {})
-

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Payment Failed</h1>
+            <p class="lead fw-normal text-white-50 mb-0">There was an issue with your payment</p>
+        </div>
+    </div>
+</header>
+<br/><br/>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    Payment Status
+                </div>
+                <div class="card-body text-center">
+                    <h1>Payment Failed</h1>
+                    <p>There was an error processing your payment.</p>
+                    <br/>
+                    <a href="{% url 'cart_summary' %}" class="btn btn-secondary">Return to Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br/><br/>
+{% endblock %}
+
