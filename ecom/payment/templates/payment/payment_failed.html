@@ -1,33 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- Header-->
+
+<!-- Header -->
 <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Payment Failed</h1>
-            <p class="lead fw-normal text-white-50 mb-0">There was an issue with your payment</p>
+            <h1 class="display-4 fw-bolder">Payment Processing Results</h1>
+            <br/>
+            <p class="lead fw-normal text-white-90 mb-0 display-6">
+                PAYMENT FAILURE
+            </p>
         </div>
     </div>
 </header>
-<br/><br/>
+
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-header">
-                    Payment Status
-                </div>
-                <div class="card-body text-center">
-                    <h1>Payment Failed</h1>
-                    <p>There was an error processing your payment.</p>
-                    <br/>
-                    <a href="{% url 'cart_summary' %}" class="btn btn-secondary">Return to Cart</a>
-                </div>
+        <center>
+            <div class="col-8">
+                <br/><br/>
+                <p>
+                    We’re sorry, but there was an issue processing your payment. 
+                    Please check your payment details and try again. If the problem persists, 
+                    feel free to contact our support team for assistance.
+                </p>
+                <br/><br/>
             </div>
-        </div>
+        </center>
     </div>
 </div>
-<br/><br/>
-{% endblock %}
 
+{% endblock %}
